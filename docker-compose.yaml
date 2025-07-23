@@ -1,0 +1,23 @@
+services:
+  ml-mnist-kube:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: ml-mnist-kube
+    ports:
+      - "8000:8000"
+    runtime: nvidia
+    deploy:
+      resources:
+        limits:
+          memory: 8g
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - ./assets:/app/assets
+
+# 1. Construir imagen
+#docker compose build
+
+# 2. Levantar contenedor con GPU (8 GB RAM)
+#docker compose up

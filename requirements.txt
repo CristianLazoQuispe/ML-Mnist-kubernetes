@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+pydantic
+onnxruntime-gpu==1.17.1
+python-multipart
+numpy
+pillow
+requests
+opencv-python
