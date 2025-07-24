@@ -1,12 +1,12 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: load-generator
+  name: mnist-load-generator-job
 spec:
   template:
     spec:
       containers:
-        - name: loader
+        - name: mnist-loader
           image: ml-mnist-kubernetes-tester:latest
           imagePullPolicy: Never
           command: ["sh", "-c"]
@@ -21,6 +21,3 @@ spec:
 
 # This job will generate load by sending 200 requests to the MNIST service.
 # It uses a Python container to install necessary libraries and send requests.
-#curl -X POST http://mnist-service:8000/predict -F file=assets/test_images/mnist_03.png &
-## {"detail":[{"type":"value_error","loc":["body","file"],"msg":"Value error, Expected UploadFile, received: <class 'str'>","input":"assets/test_images/mnist_03.png","ctx":{"error":{}}}]}^[[A^[[A^C
-#curl -X POST http://mnist-service:8000/predict -F file=@assets/test_images/mnist_03.png

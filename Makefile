@@ -4,7 +4,7 @@
 APP_IMAGE  = ml-mnist-kubernetes-ml-mnist-kube
 TEST_IMAGE = ml-mnist-kubernetes-tester
 
-.PHONY: build push deploy test load metrics logs clean
+.PHONY: build push deploy test load metrics logs clean load-thread
 
 # Build de imágenes Docker
 build:
@@ -13,8 +13,13 @@ build:
 
 # Push docker images to Minikube
 push:
+	minikube ssh --node minikube -- docker rmi ml-mnist-kubernetes-tester:latest
+	minikube ssh --node minikube-m02 -- docker rmi ml-mnist-kubernetes-tester:latest
+	minikube ssh --node minikube-m03 -- docker rmi ml-mnist-kubernetes-tester:latest
+
 	minikube image load $(APP_IMAGE):latest
 	minikube image load $(TEST_IMAGE):latest
+	
 # Verify images are loaded
 	minikube image ls | grep $(APP_IMAGE)
 	minikube image ls | grep $(TEST_IMAGE)
@@ -40,8 +45,13 @@ test:
 
 # Simulation 200 requests to MNIST service
 load:
-	kubectl apply -f k8s/load-generator.yaml
-
+	kubectl delete job mnist-load-generator-job
+	kubectl apply -f k8s/load-generator-job.yaml
+	kubectl logs job/mnist-load-generator-job
+load-thread:
+	kubectl delete job mnist-load-generator-thread-job
+	kubectl apply -f k8s/load-generator-thread-job.yaml
+	kubectl logs job/mnist-load-generator-thread-job
 # Show metrics and resource usage
 metrics:
 	minikube addons enable metrics-server
@@ -52,7 +62,6 @@ metrics:
 logs:
 	kubectl get pods -o wide
 	kubectl logs -l app=mnist --tail=50
-
 	kubectl describe pod mnist-deployment-7fc5f6fbb7-kzrtw
 
 # Clean up resources (optional)

@@ -7,7 +7,7 @@ spec:
   template:
     spec:
       containers:
-        - name: tester
+        - name: mnist-tester
           image: ml-mnist-kubernetes-tester:latest
           imagePullPolicy: Never
           command: ["sh", "-c"]

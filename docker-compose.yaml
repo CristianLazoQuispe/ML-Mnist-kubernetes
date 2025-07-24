@@ -42,3 +42,5 @@ services:
 
 # Solo si pasa → despliegue real del API
 #docker compose up -d ml-mnist-kube
+
+#docker compose up -d mnist-tester
