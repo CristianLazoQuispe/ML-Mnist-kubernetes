@@ -5,10 +5,15 @@ WORKDIR /app
 # Update system packages to reduce vulnerabilities
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
 	ca-certificates \
+	curl \
 	&& apt-get clean && rm -rf /var/lib/apt/lists/*
 
-COPY tests tests
-COPY assets assets
 COPY requirements_tester.txt requirements.txt
 
 RUN pip install --no-cache-dir -r requirements.txt
+
+COPY tests tests
+COPY assets assets
+
+# create ml-mnist-kubernetes-tester
+# docker build -t ml-mnist-kubernetes-tester:latest -f docker/Dockerfile.tester .

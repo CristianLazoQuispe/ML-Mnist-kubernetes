@@ -26,12 +26,13 @@ services:
       ml-mnist-kube:
         condition: service_started
     entrypoint: >
-      sh -c "sleep 15 && pytest tests/test_api.py -v"
+      sh -c "sleep 15 && pytest tests/ --api-url=http://ml-mnist-kube:8000/predict -v"
     volumes:
       - ./tests:/app/tests
       - ./assets:/app/assets
     restart: "no"
 
+#ml-mnist-kube
 
 # Construye todas las imágenes (app + tester)
 #docker compose build
