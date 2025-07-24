@@ -32,11 +32,6 @@ services:
       - ./assets:/app/assets
     restart: "no"
 
-# 1. Construir imagen
-#docker compose build
-
-# 2. Levantar contenedor con GPU (8 GB RAM)
-#docker compose up
 
 # Construye todas las imágenes (app + tester)
 #docker compose build

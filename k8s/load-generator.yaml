@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: load-generator
+spec:
+  template:
+    spec:
+      containers:
+        - name: loader
+          image: python:3.10-slim
+          command: ["sh", "-c"]
+          args:
+            - |
+              pip install requests pillow &&
+              for i in $(seq 1 200); do
+                curl -X POST http://mnist-service:8000/predict \
+                -F file=@/tmp/mnist_03.png &
+              done &&
+              wait
+          volumeMounts:
+            - name: testimgs
+              mountPath: /tmp
+      volumes:
+        - name: testimgs
+          hostPath:
+            path: /mnt/e/Education/Kubernetes/ML-Mnist-kubernetes/assets/test_images
+            type: Directory
+      restartPolicy: Never
+
+# This job will generate load by sending 200 requests to the MNIST service.
+# It uses a Python container to install necessary libraries and send requests.

@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mnist-test-job
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      containers:
+        - name: tester
+          image: ml-mnist-kubernetes-tester:latest
+          imagePullPolicy: Never
+          command: ["sh", "-c"]
+          args:
+            - |
+              echo "⏳ Esperando que el servicio esté disponible..." &&
+              for i in $(seq 1 30); do
+                wget -q --spider http://mnist-service:8000/docs && break || sleep 2
+              done &&
+              echo "✅ Servicio disponible, ejecutando pruebas..." &&
+              pytest tests/test_api.py -v
+
+      restartPolicy: Never

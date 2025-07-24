@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mnist-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mnist
+  template:
+    metadata:
+      labels:
+        app: mnist
+    spec:
+      containers:
+        - name: mnist-api
+          image: ml-mnist-kubernetes-ml-mnist-kube:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+          resources:
+            limits:
+              cpu: "1"
+              memory: "2Gi"
+              nvidia.com/gpu: 1
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+          env:
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: all
+      tolerations:
+        - key: "nvidia.com/gpu"
+          operator: "Exists"
+          effect: "NoSchedule"
