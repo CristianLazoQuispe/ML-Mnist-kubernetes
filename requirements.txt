@@ -1,9 +1,11 @@
 fastapi
 uvicorn[standard]
 pydantic
-onnxruntime-gpu==1.17.1
 python-multipart
-numpy
 pillow
 requests
-opencv-python
+opencv-python==4.6.0.66
+onnxruntime-gpu==1.17.1
+torch==2.1.0
+numpy==1.23.4
+pytest

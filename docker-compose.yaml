@@ -16,8 +16,33 @@ services:
     volumes:
       - ./assets:/app/assets
 
+
+  tester:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.tester
+    container_name: mnist-tester
+    depends_on:
+      ml-mnist-kube:
+        condition: service_started
+    entrypoint: >
+      sh -c "sleep 15 && pytest tests/test_api.py -v"
+    volumes:
+      - ./tests:/app/tests
+      - ./assets:/app/assets
+    restart: "no"
+
 # 1. Construir imagen
 #docker compose build
 
 # 2. Levantar contenedor con GPU (8 GB RAM)
 #docker compose up
+
+# Construye todas las imágenes (app + tester)
+#docker compose build
+
+# Corre tests desde tester (no levanta nada si falla)
+#docker compose up --exit-code-from tester --abort-on-container-exit tester
+
+# Solo si pasa → despliegue real del API
+#docker compose up -d ml-mnist-kube

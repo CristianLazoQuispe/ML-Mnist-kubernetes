@@ -1,5 +1,8 @@
 FROM pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime
-#FROM python:3.10-slim
+
+# onnx runtime errors
+ENV LD_LIBRARY_PATH=/opt/conda/lib/python3.10/site-packages/torch/lib:$LD_LIBRARY_PATH
+
 # Set default timezone to UTC or allow override
 ARG CONTAINER_TIMEZONE=Etc/UTC
 ENV CONTAINER_TIMEZONE=${CONTAINER_TIMEZONE}
