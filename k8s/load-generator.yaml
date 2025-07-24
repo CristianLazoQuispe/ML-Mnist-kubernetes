@@ -7,25 +7,20 @@ spec:
     spec:
       containers:
         - name: loader
-          image: python:3.10-slim
+          image: ml-mnist-kubernetes-tester:latest
+          imagePullPolicy: Never
           command: ["sh", "-c"]
           args:
             - |
               pip install requests pillow &&
-              for i in $(seq 1 200); do
-                curl -X POST http://mnist-service:8000/predict \
-                -F file=@/tmp/mnist_03.png &
+              for i in $(seq 1 2000); do
+                curl -X POST http://mnist-service:8000/predict -F file=@assets/test_images/mnist_03.png & sleep 0.1
               done &&
               wait
-          volumeMounts:
-            - name: testimgs
-              mountPath: /tmp
-      volumes:
-        - name: testimgs
-          hostPath:
-            path: /mnt/e/Education/Kubernetes/ML-Mnist-kubernetes/assets/test_images
-            type: Directory
       restartPolicy: Never
 
 # This job will generate load by sending 200 requests to the MNIST service.
 # It uses a Python container to install necessary libraries and send requests.
+#curl -X POST http://mnist-service:8000/predict -F file=assets/test_images/mnist_03.png &
+## {"detail":[{"type":"value_error","loc":["body","file"],"msg":"Value error, Expected UploadFile, received: <class 'str'>","input":"assets/test_images/mnist_03.png","ctx":{"error":{}}}]}^[[A^[[A^C
+#curl -X POST http://mnist-service:8000/predict -F file=@assets/test_images/mnist_03.png

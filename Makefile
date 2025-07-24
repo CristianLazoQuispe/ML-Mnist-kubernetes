@@ -44,6 +44,7 @@ load:
 
 # Show metrics and resource usage
 metrics:
+	minikube addons enable metrics-server
 	kubectl top pods
 	kubectl get hpa
 
