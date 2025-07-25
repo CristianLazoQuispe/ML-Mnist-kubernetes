@@ -11,6 +11,12 @@ model = OnnxPredictionService(str(IMAGES_DIR.parent / "mnist-8.onnx"))
 
 @router.post("/predict", response_model=PredictionResponse)
 async def predict(file: UploadFile = File(...)):
+    """Endpoint to predict the class of a given image.
+    Args:
+        file (UploadFile): The image file to be processed.
+    Returns:
+        PredictionResponse: The predicted class, probabilities, and time elapsed.
+    """
     try:
         start = time.time()
         temp_path = IMAGES_DIR / f"{uuid.uuid4()}.jpg"

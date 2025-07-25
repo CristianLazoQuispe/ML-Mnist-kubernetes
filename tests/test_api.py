@@ -9,9 +9,12 @@ def get_label_from_filename(filename: str) -> int:
     return int("".join(map(str, digits))) if digits else -1
 
 @pytest.mark.parametrize("img_path", TEST_IMAGES_DIR.glob("*.png"))
-def test_prediction_correct(img_path, api_url):  # <-- usa el fixture
-    #API_URL = "http://localhost:8000/predict"
-    #API_URL = "http://ml-mnist-kube:8000/predict"
+def test_prediction_correct(img_path, api_url):  # <-- use the api_url fixture
+    """Test that the prediction API returns the expected class for each image.
+    Inputs:
+        img_path (Path): Path to the image file to be tested.
+        api_url (str): The API URL to which the request will be sent. "http://localhost:8000/predict" or "http://ml-mnist-kube:8000/predict"
+    """
     expected_label = get_label_from_filename(img_path.name)
 
     with open(img_path, "rb") as f:
@@ -26,7 +29,5 @@ def test_prediction_correct(img_path, api_url):  # <-- usa el fixture
 
     assert predicted == expected_label, f"{img_path.name}: esperado {expected_label}, predicho {predicted}"
 
-# pytest tests/ --api-url=http://localhost:8000/predict
-# pytest tests/ --api-url=http://ml-mnist-kube:8000/predict
-# no me funciona el pytest tests --api-url=http://ml-mnist-kube:8000/predict -v
-# pytest tests/test_api.py --api-url=http://ml-mnist-kube:8000/predict -v
+# pytest tests/ --api-url=http://localhost:8000/predict -v
+# pytest tests/ --api-url=http://ml-mnist-kube:8000/predict -v

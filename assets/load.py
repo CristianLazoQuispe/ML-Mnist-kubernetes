@@ -7,13 +7,13 @@ import statistics
 import threading
 
 # Argument parser to receive the endpoint URL
+#URL = "http://mnist.local/predict" (when minikube tunnel is used and ingress is configured)
+#URL = "http://localhost:8000/predict" (when running locally without Kubernetes or tunnel without ingress)
+
 parser = argparse.ArgumentParser(description="Send MNIST image requests to an API endpoint.")
 parser.add_argument("--url", type=str, required=True, help="Endpoint URL, e.g. http://localhost:8000/predict")
 args = parser.parse_args()
 URL = args.url
-#URL = "http://mnist.local/predict" (when minikube tunnel is used and ingress is configured)
-#URL = "http://localhost:8000/predict" (when running locally without Kubernetes or tunnel without ingress)
-#python3 assets/load.py --url=http://mnist.local/predict 
 
 # Path to the image that will be sent
 IMG = Path("assets/test_images/mnist_03.png")
@@ -52,6 +52,8 @@ def send_request():
             response_times.append(elapsed)
 
 if __name__ == "__main__":
+    #python3 assets/load.py --url=http://mnist.local/predict 
+
     total_requests = 2000
     max_workers = 50
 

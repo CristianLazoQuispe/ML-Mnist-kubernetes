@@ -1,3 +1,5 @@
+import pytest
+
 def pytest_addoption(parser):
     parser.addoption(
         "--api-url",
@@ -6,15 +8,15 @@ def pytest_addoption(parser):
         help="URL base del API a testear",
     )
 
-import pytest
 
 @pytest.fixture
 def api_url(request):
+    """Fixture to provide the API URL for tests."""
     return request.config.getoption("--api-url")
 
 
-# Desde tu laptop
+# From local machine
 #pytest tests/ --api-url=http://localhost:8000/predict -v
 
-# Desde Kubernetes tester pod
+# From Kubernetes cluster
 #pytest tests/ --api-url=http://mnist-service:8000/predict -v

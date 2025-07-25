@@ -3,6 +3,15 @@ import numpy as np
 from core.service import PredictionService
 
 class OnnxPredictionService(PredictionService):
+    """Service for running predictions using an ONNX model.
+    This class uses ONNX Runtime to load the model and perform inference.
+    Args:
+        model_path (str): Path to the ONNX model file.
+    Attributes:
+        session (onnxruntime.InferenceSession): The ONNX Runtime session for the model.
+        input_name (str): Name of the input tensor for the model.
+        output_name (str): Name of the output tensor for the model.
+    """
     def __init__(self, model_path: str):
         providers = ["CUDAExecutionProvider", "CPUExecutionProvider"]
         self.session = ort.InferenceSession(model_path, providers=providers)
