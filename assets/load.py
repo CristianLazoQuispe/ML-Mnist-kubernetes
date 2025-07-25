@@ -55,7 +55,7 @@ if __name__ == "__main__":
     #python3 assets/load.py --url=http://mnist.local/predict 
 
     total_requests = 2000
-    max_workers = 50
+    max_workers = 10
 
     # Clean previous logs
     LOG_FILE.write_text("")
