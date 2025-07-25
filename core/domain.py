@@ -9,3 +9,4 @@ class PredictionRequest(BaseModel):
 class PredictionResponse(BaseModel):
     predicted_class: int
     probabilities: List[float]
+    time_elapsed: float

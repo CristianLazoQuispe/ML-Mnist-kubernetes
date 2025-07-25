@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: mnist-loader-thread
-          image: ml-mnist-kubernetes-tester:latest
+          image: ml-mnist-kubernetes-mnist-tester:latest
           imagePullPolicy: Never
           command: ["sh", "-c"]
           args:
