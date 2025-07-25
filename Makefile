@@ -8,7 +8,7 @@
 APP_IMAGE  = ml-mnist-kubernetes-ml-mnist-kube
 TEST_IMAGE = ml-mnist-kubernetes-mnist-tester
 
-.PHONY: build push deploy test load metrics logs clean status load-thread clean-images build-compose test-compose run-compose logs-compose-service logs-compose-tester
+.PHONY: build clean-images push deploy test open-ssh stress-test stress-test-thread metrics open-dashboard logs clean status build-compose test-compose stress-test-compose-thread run-compose logs-compose-service logs-compose-tester open-ssh
 
 # Build de imágenes Docker
 build:
@@ -53,15 +53,17 @@ test:
 	kubectl wait --for=condition=complete --timeout=60s job/mnist-test-job
 	kubectl logs job/mnist-test-job
 
-# kubectl exec -it mnist-test-job-v8mvk -- /bin/sh
-
+open-ssh:
+	kubectl exec -it mnist-test-job-v8mvk -- /bin/sh
 
 # Simulation 2000 requests to MNIST service
-load:
+stress-test:
 	kubectl delete job mnist-load-generator-job
 	kubectl apply -f k8s/load-generator-job.yaml
 	kubectl logs job/mnist-load-generator-job
-load-thread:
+
+# Simulation 2000 requests to MNIST service in parallel (using threads)
+stress-test-thread:
 	kubectl delete job mnist-load-generator-thread-job
 	kubectl apply -f k8s/load-generator-thread-job.yaml
 	kubectl logs job/mnist-load-generator-thread-job
@@ -70,6 +72,9 @@ metrics:
 	minikube addons enable metrics-server
 	kubectl top pods
 	kubectl get hpa
+# Show the dashboard of Minikube
+open-dashboard:
+	minikube dashboard
 
 # show logs of the MNIST pods
 logs:
@@ -102,7 +107,7 @@ build-compose:
 test-compose:
 # Run tests from tester (does not start anything if it fails)
 	docker compose up --exit-code-from mnist-tester --abort-on-container-exit mnist-tester
-test-compose-thread:
+stress-test-compose-thread:
 # Run tests stress 
 	python3 assets/load.py --url=http://localhost:8000/predict
 run-compose:

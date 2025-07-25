@@ -85,17 +85,6 @@ kubectl top pods
 kubectl get hpa
 ```
 
-
----
-
-## 🔧 Setup (Local Docker Compose)
-
-```bash
-make build-compose run-compose logs-compose-tester
-make test-compose        # Run unit test in-docker
-make test-compose-thread # Run stress in parallel
-````
-
 ---
 
 ## 🧠 Predict Programmatically
@@ -106,6 +95,16 @@ files = {"file": open("assets/test_images/mnist_03.png", "rb")}
 r = requests.post("http://mnist.local:8000/predict", files=files)
 print(r.json())
 ```
+
+---
+
+## 🔧 Setup (Local Docker Compose)
+
+```bash
+make build-compose run-compose logs-compose-tester
+make test-compose        # Run unit test in-docker
+make stress-test-compose-thread # Run stress in parallel
+````
 
 ---
 
