@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+gunicorn[standard]
+pydantic
+python-multipart
+pillow
+requests
+opencv-python==4.6.0.66
+onnxruntime-gpu==1.17.1
+torch==2.1.0
+numpy==1.23.4
+pytest

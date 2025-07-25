@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mnist-load-generator-thread-job
+spec:
+  template:
+    spec:
+      containers:
+        - name: mnist-loader-thread
+          image: ml-mnist-kubernetes-tester:latest
+          imagePullPolicy: Never
+          command: ["sh", "-c"]
+          args:
+            - |
+              pip install requests &&
+              python3 assets/load.py --url http://mnist-service:8000/predict
+      restartPolicy: Never

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mnist-service
+spec:
+  selector:
+    app: mnist
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8000
+      targetPort: 8000
+      nodePort: 30080
+  type: NodePort
+
+# k8s/service.yaml (exposición vía navegador con NodePort)Edit

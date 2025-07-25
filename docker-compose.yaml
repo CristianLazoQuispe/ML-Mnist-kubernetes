@@ -1,0 +1,46 @@
+services:
+  ml-mnist-kube:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: ml-mnist-kube
+    ports:
+      - "8000:8000"
+    runtime: nvidia
+    deploy:
+      resources:
+        limits:
+          memory: 8g
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - ./assets:/app/assets
+
+
+  tester:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.tester
+    container_name: mnist-tester
+    depends_on:
+      ml-mnist-kube:
+        condition: service_started
+    entrypoint: >
+      sh -c "sleep 15 && pytest tests/ --api-url=http://ml-mnist-kube:8000/predict -v"
+    volumes:
+      - ./tests:/app/tests
+      - ./assets:/app/assets
+    restart: "no"
+
+#ml-mnist-kube
+# the url works because it is the service name in the docker-compose network
+# Construye todas las imágenes (app + tester)
+#docker compose build
+
+# Corre tests desde tester (no levanta nada si falla)
+#docker compose up --exit-code-from tester --abort-on-container-exit tester
+
+# Solo si pasa → despliegue real del API
+#docker compose up -d ml-mnist-kube
+
+#docker compose up -d mnist-tester
