@@ -58,14 +58,15 @@ open-ssh:
 
 # Simulation 2000 requests to MNIST service
 stress-test:
-	kubectl delete job mnist-load-generator-job
+	kubectl delete job mnist-load-generator-job || true
 	kubectl apply -f k8s/load-generator-job.yaml
 	kubectl logs job/mnist-load-generator-job
 
 # Simulation 2000 requests to MNIST service in parallel (using threads)
 stress-test-thread:
-	kubectl delete job mnist-load-generator-thread-job
+	kubectl delete job mnist-load-generator-thread-job || true
 	kubectl apply -f k8s/load-generator-thread-job.yaml
+	sleep 30
 	kubectl logs job/mnist-load-generator-thread-job
 # Show metrics and resource usage
 metrics:

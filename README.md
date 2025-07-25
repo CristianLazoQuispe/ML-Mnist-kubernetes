@@ -1,4 +1,4 @@
-# ⚡ Ultra-Fast Image Inference API with FastAPI + ONNX + Kubernetes
+# ⚡ FastVisionAPI: Scalable Image Inference with Kubernetes + FastAPI + ONNX
 
 ![Made with FastAPI](https://img.shields.io/badge/Powered%20By-FastAPI-00b300?logo=fastapi&logoColor=white)
 ![Kubernetes](https://img.shields.io/badge/K8s-AutoScaling-blue?logo=kubernetes)
@@ -60,6 +60,7 @@ git clone https://github.com/tu_usuario/ml-mnist-kubernetes
 cd ml-mnist-kubernetes
 make build clean-images push deploy
 make test        # Run unit test in-cluster
+make stress-test-thread # Run stress test 
 ````
 
 ---
@@ -143,13 +144,13 @@ Pull requests are welcome. If you find value in this repo, feel free to ⭐ it o
 | **Total Requests**   | 2000                       | 2000                    |
 | **Successes**        | 2000                       | 2000                    |
 | **Failures**         | 0                          | 0                       |
-| **Total Time (s)**   | \~42.96                    | **\~42.2**                |
-| **Mean Latency (s)** | \~0.2122                   | **\~1.038**               |
-| **Std Dev (s)**      | \~0.0772                   | **\~0.252**               |
-| **Min Latency (s)**  | \~0.0775                   | **\~0.431**               |
-| **Max Latency (s)**  | \~0.5974                   | **\~2.166**               |
+| **Total Time (s)**   | \~42.96                    | **\~26.87**             |
+| **Mean Latency (s)** | \~0.2122                   | **\~0.1244**            |
+| **Std Dev (s)**      | \~0.0772                   | **\~0.0552**            |
+| **Min Latency (s)**  | \~0.0775                   | **\~0.0377**            |
+| **Max Latency (s)**  | \~0.5974                   | **\~0.5646**            |
 
-> 📌 *Inference tested using 2000 requests in local environment.*
+> 📌 *Inference tested using 2000 requests in local environment using 10 threads.*
 
 ---
 
