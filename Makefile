@@ -1,27 +1,34 @@
 # Makefile - Deploying ML-MNIST on Kubernetes
 # This Makefile automates the build, push, deploy, test, load, metrics, logs, and clean operations for the ML-MNIST application on Kubernetes.
+# In my case I use 3 nodes in Minikube, but you can use only one node if you want.
+# It assumes you have Minikube and kubectl installed and configured.
+# The application is built using Docker and deployed on a Kubernetes cluster.
+# The application is a FastAPI service that classifies MNIST images using an ONNX model.
 
 APP_IMAGE  = ml-mnist-kubernetes-ml-mnist-kube
-TEST_IMAGE = ml-mnist-kubernetes-tester
+TEST_IMAGE = ml-mnist-kubernetes-mnist-tester
 
-.PHONY: build push deploy test load metrics logs clean load-thread
+.PHONY: build push deploy test load metrics logs clean load-thread clean-images
 
 # Build de imágenes Docker
 build:
 	docker build -f docker/Dockerfile -t $(APP_IMAGE):latest .
 	docker build -f docker/Dockerfile.tester -t $(TEST_IMAGE):latest .
 
+
+clean-images:
+    
+	minikube ssh --node minikube -- docker rmi $(TEST_IMAGE):latest  || true
+	minikube ssh --node minikube-m02 -- docker rmi $(TEST_IMAGE):latest  || true
+	minikube ssh --node minikube-m03 -- docker rmi $(TEST_IMAGE):latest  || true
+
+
+	minikube ssh --node minikube -- docker rmi $(APP_IMAGE):latest  || true
+	minikube ssh --node minikube-m02 -- docker rmi $(APP_IMAGE):latest  || true
+	minikube ssh --node minikube-m03 -- docker rmi $(APP_IMAGE):latest  || true
+
 # Push docker images to Minikube
 push:
-	minikube ssh --node minikube -- docker rmi ml-mnist-kubernetes-tester:latest
-	minikube ssh --node minikube-m02 -- docker rmi ml-mnist-kubernetes-tester:latest
-	minikube ssh --node minikube-m03 -- docker rmi ml-mnist-kubernetes-tester:latest
-
-
-	minikube ssh --node minikube -- docker rmi ml-mnist-kubernetes-ml-mnist-kube:latest
-	minikube ssh --node minikube-m02 -- docker rmi ml-mnist-kubernetes-ml-mnist-kube:latest
-	minikube ssh --node minikube-m03 -- docker rmi ml-mnist-kubernetes-ml-mnist-kube:latest
-
 	minikube image load $(APP_IMAGE):latest
 	minikube image load $(TEST_IMAGE):latest
 	
@@ -48,7 +55,7 @@ test:
 # kubectl exec -it mnist-test-job-v8mvk -- /bin/sh
 
 
-# Simulation 200 requests to MNIST service
+# Simulation 2000 requests to MNIST service
 load:
 	kubectl delete job mnist-load-generator-job
 	kubectl apply -f k8s/load-generator-job.yaml

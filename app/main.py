@@ -4,7 +4,7 @@ import uvicorn
 
 app = FastAPI(
     title="MNIST FastAPI ONNX Service",
-    description="Clasificación de dígitos con MNIST",
+    description="MNIST image classification service using FastAPI and ONNX.",
     version="1.0.0"
 )
 

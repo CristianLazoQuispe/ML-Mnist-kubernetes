@@ -17,7 +17,7 @@ services:
       - ./assets:/app/assets
 
 
-  tester:
+  mnist-tester:
     build:
       context: .
       dockerfile: docker/Dockerfile.tester
