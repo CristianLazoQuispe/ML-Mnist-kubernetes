@@ -13,5 +13,5 @@ spec:
           args:
             - |
               pip install requests &&
-              python3 assets/load.py
+              python3 assets/load.py --url http://mnist-service:8000/predict
       restartPolicy: Never

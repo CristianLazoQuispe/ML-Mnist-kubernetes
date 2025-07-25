@@ -33,7 +33,7 @@ services:
     restart: "no"
 
 #ml-mnist-kube
-
+# the url works because it is the service name in the docker-compose network
 # Construye todas las imágenes (app + tester)
 #docker compose build
 

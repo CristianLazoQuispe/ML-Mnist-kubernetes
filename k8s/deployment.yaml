@@ -20,11 +20,11 @@ spec:
             - containerPort: 8000
           resources:
             limits:
-              cpu: "1"
+              cpu: "2"           # 2 CPUs for the container
               memory: "2Gi"
               nvidia.com/gpu: 1
             requests:
-              cpu: "500m"
+              cpu: "1"           # kubernetes will ensure at least 1 CPU is available
               memory: "1Gi"
           env:
             - name: NVIDIA_VISIBLE_DEVICES

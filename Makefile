@@ -17,6 +17,11 @@ push:
 	minikube ssh --node minikube-m02 -- docker rmi ml-mnist-kubernetes-tester:latest
 	minikube ssh --node minikube-m03 -- docker rmi ml-mnist-kubernetes-tester:latest
 
+
+	minikube ssh --node minikube -- docker rmi ml-mnist-kubernetes-ml-mnist-kube:latest
+	minikube ssh --node minikube-m02 -- docker rmi ml-mnist-kubernetes-ml-mnist-kube:latest
+	minikube ssh --node minikube-m03 -- docker rmi ml-mnist-kubernetes-ml-mnist-kube:latest
+
 	minikube image load $(APP_IMAGE):latest
 	minikube image load $(TEST_IMAGE):latest
 	
@@ -69,5 +74,6 @@ clean:
 	kubectl delete deployment mnist-deployment || true
 	kubectl delete service mnist-service || true
 	kubectl delete hpa mnist-hpa || true
-	kubectl delete job load-generator || true
+	kubectl delete job mnist-load-generator-job || true
+	kubectl delete job mnist-load-generator-thread-job || true
 	kubectl delete job mnist-test-job || true

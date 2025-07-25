@@ -26,7 +26,7 @@ def test_prediction_correct(img_path, api_url):  # <-- usa el fixture
 
     assert predicted == expected_label, f"{img_path.name}: esperado {expected_label}, predicho {predicted}"
 
-#pytest tests/ --api-url=http://localhost:8000/predict
+# pytest tests/ --api-url=http://localhost:8000/predict
 # pytest tests/ --api-url=http://ml-mnist-kube:8000/predict
 # no me funciona el pytest tests --api-url=http://ml-mnist-kube:8000/predict -v
 # pytest tests/test_api.py --api-url=http://ml-mnist-kube:8000/predict -v
