@@ -8,7 +8,7 @@
 APP_IMAGE  = ml-mnist-kubernetes-ml-mnist-kube
 TEST_IMAGE = ml-mnist-kubernetes-mnist-tester
 
-.PHONY: build push deploy test load metrics logs clean load-thread clean-images
+.PHONY: build push deploy test load metrics logs clean load-thread clean-images build-compose test-compose run-compose logs-compose-service logs-compose-tester
 
 # Build de imágenes Docker
 build:
@@ -84,3 +84,23 @@ clean:
 	kubectl delete job mnist-load-generator-job || true
 	kubectl delete job mnist-load-generator-thread-job || true
 	kubectl delete job mnist-test-job || true
+
+# Build with Docker-compose
+
+build-compose:
+	# Build the images
+	docker compose build
+test-compose:
+	# Run tests from tester (does not start anything if it fails)
+	docker compose up --exit-code-from mnist-tester --abort-on-container-exit mnist-tester
+run-compose:
+	# Run the MNIST service
+	docker compose up -d ml-mnist-kube
+	# Run the MNIST tester
+	docker compose up -d mnist-tester
+logs-compose-service:
+	# Show logs of the MNIST service
+	docker compose logs -f ml-mnist-kube
+logs-compose-tester:
+	# Show logs of the MNIST tester
+	docker compose logs -f mnist-tester

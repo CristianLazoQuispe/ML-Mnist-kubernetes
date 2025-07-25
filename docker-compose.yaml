@@ -31,16 +31,3 @@ services:
       - ./tests:/app/tests
       - ./assets:/app/assets
     restart: "no"
-
-#ml-mnist-kube
-# the url works because it is the service name in the docker-compose network
-# Construye todas las imágenes (app + tester)
-#docker compose build
-
-# Corre tests desde tester (no levanta nada si falla)
-#docker compose up --exit-code-from tester --abort-on-container-exit tester
-
-# Solo si pasa → despliegue real del API
-#docker compose up -d ml-mnist-kube
-
-#docker compose up -d mnist-tester
