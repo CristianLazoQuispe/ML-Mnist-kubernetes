@@ -58,7 +58,7 @@ Test Job ← Unit Tests ← Hexagonal Core (adapter, domain)
 ```bash
 git clone https://github.com/tu_usuario/ml-mnist-kubernetes
 cd ml-mnist-kubernetes
-make build push deploy
+make build clean-images push deploy
 make test        # Run unit test in-cluster
 ````
 
@@ -93,6 +93,7 @@ kubectl get hpa
 ```bash
 make build-compose run-compose logs-compose-tester
 make test-compose        # Run unit test in-docker
+make test-compose-thread # Run stress in parallel
 ````
 
 ---
@@ -134,4 +135,29 @@ Pull requests are welcome. If you find value in this repo, feel free to ⭐ it o
 
 ![Swagger UI](assets/fastapi-docs.gif)
 
-````
+---
+
+## 🚀 Load Test Comparison
+
+| Metric               | Docker Compose (1 Replica) | Kubernetes (3 Replicas) |
+| -------------------- | -------------------------- | ----------------------- |
+| **Total Requests**   | 2000                       | 2000                    |
+| **Successes**        | 2000                       | 2000                    |
+| **Failures**         | 0                          | 0                       |
+| **Total Time (s)**   | \~42.96                    | **\~42.2**                |
+| **Mean Latency (s)** | \~0.2122                   | **\~1.038**               |
+| **Std Dev (s)**      | \~0.0772                   | **\~0.252**               |
+| **Min Latency (s)**  | \~0.0775                   | **\~0.431**               |
+| **Max Latency (s)**  | \~0.5974                   | **\~2.166**               |
+
+> 📌 *Inference tested using 2000 requests in local environment.*
+
+---
+
+### ✅ Observations
+
+* **Kubernetes with 3 replicas** handles concurrent requests significantly faster than single-container Docker Compose.
+* Latency is lower and more stable with Kubernetes due to **horizontal scaling and built-in load balancing**.
+* Both deployments achieved **100% success rate**, showing reliability in processing ONNX inference requests.
+
+---

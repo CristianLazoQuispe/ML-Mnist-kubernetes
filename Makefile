@@ -8,7 +8,7 @@
 APP_IMAGE  = ml-mnist-kubernetes-ml-mnist-kube
 TEST_IMAGE = ml-mnist-kubernetes-mnist-tester
 
-.PHONY: build push deploy test load metrics logs clean load-thread clean-images build-compose test-compose run-compose logs-compose-service logs-compose-tester
+.PHONY: build push deploy test load metrics logs clean status load-thread clean-images build-compose test-compose run-compose logs-compose-service logs-compose-tester
 
 # Build de imágenes Docker
 build:
@@ -17,6 +17,7 @@ build:
 
 
 clean-images:
+# Try to remove images from Minikube nodes if they exist
     
 	minikube ssh --node minikube -- docker rmi $(TEST_IMAGE):latest  || true
 	minikube ssh --node minikube-m02 -- docker rmi $(TEST_IMAGE):latest  || true
@@ -85,6 +86,14 @@ clean:
 	kubectl delete job mnist-load-generator-thread-job || true
 	kubectl delete job mnist-test-job || true
 
+status:
+# Check status
+	kubectl get pods -o wide
+	kubectl get svc
+	kubectl top pods
+	kubectl get hpa
+
+
 # Build with Docker-compose
 
 build-compose:
@@ -93,6 +102,9 @@ build-compose:
 test-compose:
 # Run tests from tester (does not start anything if it fails)
 	docker compose up --exit-code-from mnist-tester --abort-on-container-exit mnist-tester
+test-compose-thread:
+# Run tests stress 
+	python3 assets/load.py --url=http://localhost:8000/predict
 run-compose:
 # Run the MNIST service
 	docker compose up -d ml-mnist-kube
