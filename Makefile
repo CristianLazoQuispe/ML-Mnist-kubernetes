@@ -88,19 +88,19 @@ clean:
 # Build with Docker-compose
 
 build-compose:
-	# Build the images
+# Build the images
 	docker compose build
 test-compose:
-	# Run tests from tester (does not start anything if it fails)
+# Run tests from tester (does not start anything if it fails)
 	docker compose up --exit-code-from mnist-tester --abort-on-container-exit mnist-tester
 run-compose:
-	# Run the MNIST service
+# Run the MNIST service
 	docker compose up -d ml-mnist-kube
-	# Run the MNIST tester
+# Run the MNIST tester
 	docker compose up -d mnist-tester
 logs-compose-service:
-	# Show logs of the MNIST service
+# Show logs of the MNIST service
 	docker compose logs -f ml-mnist-kube
 logs-compose-tester:
-	# Show logs of the MNIST tester
+# Show logs of the MNIST tester
 	docker compose logs -f mnist-tester
