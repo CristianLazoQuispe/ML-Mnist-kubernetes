@@ -49,18 +49,17 @@ Test Job ← Unit Tests ← Hexagonal Core (adapter, domain)
 ├── Makefile            # Fast deployment, test and load generation
 └── README.md
 
-````
+```
 
 ---
 
-## 🔧 Setup (Local)
+## 🔧 Setup (Local Kubernetes)
 
 ```bash
 git clone https://github.com/tu_usuario/ml-mnist-kubernetes
 cd ml-mnist-kubernetes
 make build push deploy
 make test        # Run unit test in-cluster
-make open-api    # Open Swagger UI via Ingress
 ````
 
 ---
@@ -85,6 +84,16 @@ make load-thread  # 2000 parallel requests
 kubectl top pods
 kubectl get hpa
 ```
+
+
+---
+
+## 🔧 Setup (Local Docker Compose)
+
+```bash
+make build-compose run-compose logs-compose-tester
+make test-compose        # Run unit test in-docker
+````
 
 ---
 
