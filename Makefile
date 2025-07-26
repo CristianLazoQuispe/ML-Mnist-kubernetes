@@ -66,7 +66,7 @@ stress-test:
 stress-test-thread:
 	kubectl delete job mnist-load-generator-thread-job || true
 	kubectl apply -f k8s/load-generator-thread-job.yaml
-	sleep 30
+	sleep 60
 	kubectl logs job/mnist-load-generator-thread-job
 # Show metrics and resource usage
 metrics:
@@ -99,7 +99,7 @@ status:
 	kubectl top pods
 	kubectl get hpa
 
-
+############################################
 # Build with Docker-compose
 
 build-compose:

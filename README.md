@@ -144,11 +144,11 @@ Pull requests are welcome. If you find value in this repo, feel free to ⭐ it o
 | **Total Requests**   | 2000                       | 2000                    |
 | **Successes**        | 2000                       | 2000                    |
 | **Failures**         | 0                          | 0                       |
-| **Total Time (s)**   | \~42.96                    | **\~26.87**             |
-| **Mean Latency (s)** | \~0.2122                   | **\~0.1244**            |
-| **Std Dev (s)**      | \~0.0772                   | **\~0.0552**            |
-| **Min Latency (s)**  | \~0.0775                   | **\~0.0377**            |
-| **Max Latency (s)**  | \~0.5974                   | **\~0.5646**            |
+| **Total Time (s)**   | \~42.96                    | **\~22.13**             |
+| **Mean Latency (s)** | \~0.2122                   | **\~0.1025**            |
+| **Std Dev (s)**      | \~0.0772                   | **\~0.0380**            |
+| **Min Latency (s)**  | \~0.0775                   | **\~0.0376**            |
+| **Max Latency (s)**  | \~0.5974                   | **\~0.3147**            |
 
 > 📌 *Inference tested using 2000 requests in local environment using 10 threads.*
 
