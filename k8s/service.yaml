@@ -13,4 +13,4 @@ spec:
       nodePort: 30080
   type: NodePort
 
-# k8s/service.yaml (exposición vía navegador con NodePort)Edit
+# k8s/service.yaml (# expose the MNIST service via NodePort)

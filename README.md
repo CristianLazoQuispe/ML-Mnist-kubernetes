@@ -1,4 +1,4 @@
-# ⚡ Ultra-Fast Image Inference API with FastAPI + ONNX + Kubernetes
+# ⚡ FastVisionAPI: Scalable Image Inference with Kubernetes + FastAPI + ONNX
 
 ![Made with FastAPI](https://img.shields.io/badge/Powered%20By-FastAPI-00b300?logo=fastapi&logoColor=white)
 ![Kubernetes](https://img.shields.io/badge/K8s-AutoScaling-blue?logo=kubernetes)
@@ -60,6 +60,7 @@ git clone https://github.com/tu_usuario/ml-mnist-kubernetes
 cd ml-mnist-kubernetes
 make build clean-images push deploy
 make test        # Run unit test in-cluster
+make stress-test-thread # Run stress test 
 ````
 
 ---
@@ -85,17 +86,6 @@ kubectl top pods
 kubectl get hpa
 ```
 
-
----
-
-## 🔧 Setup (Local Docker Compose)
-
-```bash
-make build-compose run-compose logs-compose-tester
-make test-compose        # Run unit test in-docker
-make test-compose-thread # Run stress in parallel
-````
-
 ---
 
 ## 🧠 Predict Programmatically
@@ -106,6 +96,16 @@ files = {"file": open("assets/test_images/mnist_03.png", "rb")}
 r = requests.post("http://mnist.local:8000/predict", files=files)
 print(r.json())
 ```
+
+---
+
+## 🔧 Setup (Local Docker Compose)
+
+```bash
+make build-compose run-compose logs-compose-tester
+make test-compose        # Run unit test in-docker
+make stress-test-compose-thread # Run stress in parallel
+````
 
 ---
 
@@ -144,13 +144,13 @@ Pull requests are welcome. If you find value in this repo, feel free to ⭐ it o
 | **Total Requests**   | 2000                       | 2000                    |
 | **Successes**        | 2000                       | 2000                    |
 | **Failures**         | 0                          | 0                       |
-| **Total Time (s)**   | \~42.96                    | **\~42.2**                |
-| **Mean Latency (s)** | \~0.2122                   | **\~1.038**               |
-| **Std Dev (s)**      | \~0.0772                   | **\~0.252**               |
-| **Min Latency (s)**  | \~0.0775                   | **\~0.431**               |
-| **Max Latency (s)**  | \~0.5974                   | **\~2.166**               |
+| **Total Time (s)**   | \~42.96                    | **\~22.13**             |
+| **Mean Latency (s)** | \~0.2122                   | **\~0.1025**            |
+| **Std Dev (s)**      | \~0.0772                   | **\~0.0380**            |
+| **Min Latency (s)**  | \~0.0775                   | **\~0.0376**            |
+| **Max Latency (s)**  | \~0.5974                   | **\~0.3147**            |
 
-> 📌 *Inference tested using 2000 requests in local environment.*
+> 📌 *Inference tested using 2000 requests in local environment using 10 threads.*
 
 ---
 
